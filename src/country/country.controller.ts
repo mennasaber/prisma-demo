@@ -19,7 +19,10 @@ export class CountryController {
   create(@Body() createCountryDto: CreateCountryDto) {
     return this.countryService.create(createCountryDto);
   }
-
+  @Get('with-cities')
+  findWithCities() {
+    return this.countryService.findWithCities();
+  }
   @Get()
   findAll() {
     return this.countryService.findAll();

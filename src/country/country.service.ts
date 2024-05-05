@@ -31,4 +31,16 @@ export class CountryService {
   remove(id: number) {
     return this.prisma.country.delete({ where: { id } });
   }
+
+  findWithCities() {
+    return this.prisma.country.findMany({
+      include: {
+        city: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+  }
 }
