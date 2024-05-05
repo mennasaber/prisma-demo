@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model city {
+  id         Int     @id @default(autoincrement())
+  name       String  @db.VarChar(45)
+  country_id Int
+  country    country @relation(fields: [country_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_country_id")
+  user       user[]
+
+  @@index([country_id], map: "fk_country_id_idx")
+}
+
+model country {
+  id   Int    @id @default(autoincrement())
+  name String @unique(map: "name_UNIQUE") @db.VarChar(50)
+  city city[] //naming + S
+}
+
+model user {
+  id      Int    @id @default(autoincrement())
+  name    String @db.VarChar(45)
+  city_id Int
+  city    city   @relation(fields: [city_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_city_id")
+
+  @@index([city_id], map: "fk_city_id_idx")
+}
